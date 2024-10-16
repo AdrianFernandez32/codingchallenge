@@ -2,6 +2,7 @@ package mx.edu.cetys.fernandez.adrian.codingchallenge.service;
 
 import mx.edu.cetys.fernandez.adrian.codingchallenge.model.Movie;
 import mx.edu.cetys.fernandez.adrian.codingchallenge.repostitory.MovieRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,8 +15,8 @@ public class MovieService {
     private final MovieRepository movieRepository;
     private final RestTemplate restTemplate;
 
-    private final String tmdbApiKey = "8829509002394ab72b2199f25ff94ce7";
-    //SPRING_AI_OPENAI_API_KEY
+    @Value("${tmdb.api-key}")
+    private String tmdbApiKey;
 
     public MovieService(MovieRepository movieRepository, RestTemplate restTemplate) {
         this.movieRepository = movieRepository;
