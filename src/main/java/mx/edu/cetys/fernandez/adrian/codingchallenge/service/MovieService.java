@@ -15,6 +15,7 @@ public class MovieService {
     private final RestTemplate restTemplate;
 
     private final String tmdbApiKey = "8829509002394ab72b2199f25ff94ce7";
+    //SPRING_AI_OPENAI_API_KEY
 
     public MovieService(MovieRepository movieRepository, RestTemplate restTemplate) {
         this.movieRepository = movieRepository;
