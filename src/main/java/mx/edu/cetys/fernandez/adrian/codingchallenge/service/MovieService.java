@@ -2,10 +2,8 @@ package mx.edu.cetys.fernandez.adrian.codingchallenge.service;
 
 import mx.edu.cetys.fernandez.adrian.codingchallenge.model.Movie;
 import mx.edu.cetys.fernandez.adrian.codingchallenge.repostitory.MovieRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -13,33 +11,22 @@ import java.util.concurrent.CompletableFuture;
 public class MovieService {
 
     private final MovieRepository movieRepository;
-    private final RestTemplate restTemplate;
+    private final OpenAIService openAIService;
 
-    @Value("${tmdb.api-key}")
-    private String tmdbApiKey;
-
-    public MovieService(MovieRepository movieRepository, RestTemplate restTemplate) {
+    public MovieService(MovieRepository movieRepository, OpenAIService openAIService) {
         this.movieRepository = movieRepository;
-        this.restTemplate = restTemplate;
+        this.openAIService = openAIService;
     }
 
     @Async
     public CompletableFuture<String> searchMovies(String title) throws Exception {
-        String url = String.format("https://api.themoviedb.org/3/search/movie?api_key=%s&query=%s", tmdbApiKey, title);
-        String response = restTemplate.getForObject(url, String.class);
-
-        // Parse response, store in DB, and call LLM
+        // Simulamos búsqueda en TMDB (puedes usar RestTemplate para TMDB como ya lo tienes)
         Movie movie = new Movie(title);
         movieRepository.save(movie);
 
-        // Call OpenAI for a summary (mocked for now)
-        String summary = getSummaryFromLLM(movie.getTitle());
+        // Obtener el resumen de OpenAI llamando a OpenAIService
+        String summary = openAIService.getSummaryFromOpenAI(movie.getTitle());
 
-        return CompletableFuture.completedFuture("Results: " + response + "\n Summary: " + summary);
-    }
-
-    private String getSummaryFromLLM(String movieTitle) {
-        // Call to OpenAI API will be here
-        return "This is a summary for the movie: " + movieTitle;
+        return CompletableFuture.completedFuture("Summary: " + summary);
     }
 }
