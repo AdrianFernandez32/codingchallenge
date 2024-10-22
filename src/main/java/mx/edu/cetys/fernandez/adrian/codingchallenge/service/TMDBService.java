@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class TMDBService {
 
-    @Value("${tmdb.api-key}")
+    @Value("${tmdb_apikey}")
     private String tmdbApiKey;
 
     private final RestTemplate restTemplate;
