@@ -1,32 +1,41 @@
 package mx.edu.cetys.fernandez.adrian.codingchallenge.service;
 
 import mx.edu.cetys.fernandez.adrian.codingchallenge.model.Movie;
-import mx.edu.cetys.fernandez.adrian.codingchallenge.repostitory.MovieRepository;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
 public class MovieService {
 
-    private final MovieRepository movieRepository;
+    private final TMDBService tmdbService;
     private final OpenAIService openAIService;
+    private final MovieDatabaseService movieDatabaseService;
 
-    public MovieService(MovieRepository movieRepository, OpenAIService openAIService) {
-        this.movieRepository = movieRepository;
+    public MovieService(TMDBService tmdbService, OpenAIService openAIService, MovieDatabaseService movieDatabaseService) {
+        this.tmdbService = tmdbService;
         this.openAIService = openAIService;
+        this.movieDatabaseService = movieDatabaseService;
     }
 
     @Async
-    public CompletableFuture<String> searchMovies(String title) throws Exception {
-        // Simulamos búsqueda en TMDB (puedes usar RestTemplate para TMDB como ya lo tienes)
-        Movie movie = new Movie(title);
-        movieRepository.save(movie);
+    public CompletableFuture<String> processMovie(String title) throws Exception {
+        String tmdbResponse = tmdbService.searchMovieByTitle(title);
 
-        // Obtener el resumen de OpenAI llamando a OpenAIService
+        Movie movie = new Movie(title);
+        movieDatabaseService.saveMovie(movie);
+
         String summary = openAIService.getSummaryFromOpenAI(movie.getTitle());
 
-        return CompletableFuture.completedFuture("Summary: " + summary);
+        return CompletableFuture.completedFuture("TMDB Response: " + tmdbResponse + "\nSummary: " + summary);
+    }
+
+    @Async
+    public CompletableFuture<String> getAllMovies() {
+        List<Movie> movies = movieDatabaseService.findAllMovies();
+        return CompletableFuture.completedFuture(movies.toString());
     }
 }
+

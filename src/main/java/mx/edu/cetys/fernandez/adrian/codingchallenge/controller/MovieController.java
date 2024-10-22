@@ -15,8 +15,15 @@ public class MovieController {
         this.movieService = movieService;
     }
 
+    // Endpoint para buscar películas, guardar en la base de datos y obtener un resumen
     @GetMapping("/search/{title}")
-    public CompletableFuture<String> searchMovies(@PathVariable String title) throws Exception {
-        return movieService.searchMovies(title);
+    public CompletableFuture<String> processMovie(@PathVariable String title) throws Exception {
+        return movieService.processMovie(title);
+    }
+
+    // Endpoint para obtener todas las películas en la base de datos
+    @GetMapping
+    public CompletableFuture<String> getAllMovies() {
+        return movieService.getAllMovies();
     }
 }
