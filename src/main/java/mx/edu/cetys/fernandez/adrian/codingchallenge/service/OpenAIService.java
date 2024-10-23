@@ -14,11 +14,12 @@ public class OpenAIService {
     private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
     private final OkHttpClient client = new OkHttpClient();
 
-    @Value("${openai.api-key}")
+    @Value("${spring.ai.openai.api-key}")
     private String apiKey;
 
     public String getSummaryFromOpenAI(String movieTitle) throws IOException {
-        String prompt = "Provide a brief summary for the movie titled: " + movieTitle;
+        String prompt = "Quiero que me des un summary de esta película en especifico, pero me gustaría que sea como sea que des el summary, inicies con estas tres palabras: \"Esta película es: \""
+                + " Título: " + movieTitle;
 
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("model", "gpt-3.5-turbo");
