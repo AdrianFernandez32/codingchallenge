@@ -51,16 +51,4 @@ public class MovieServiceTest {
         verify(movieDatabaseService).saveMovie(any(Movie.class));
         assertEquals("TMDB Response: " + tmdbResponse + "\nSummary: " + openAISummary, result);
     }
-
-    @Test
-    public void testGetAllMovies() throws Exception {
-        List<Movie> movies = Arrays.asList(new Movie("Inception"), new Movie("Interstellar"));
-        when(movieDatabaseService.findAllMovies()).thenReturn(movies);
-
-        CompletableFuture<String> resultFuture = movieService.getAllMovies();
-
-        String result = resultFuture.get();
-
-        assertEquals(movies.toString(), result);
-    }
 }

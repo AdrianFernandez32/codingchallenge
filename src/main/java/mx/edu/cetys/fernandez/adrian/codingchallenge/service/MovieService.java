@@ -31,11 +31,5 @@ public class MovieService {
 
         return CompletableFuture.completedFuture("TMDB Response: " + tmdbResponse + "\nSummary: " + summary);
     }
-
-    @Async
-    public CompletableFuture<String> getAllMovies() {
-        List<Movie> movies = movieDatabaseService.findAllMovies();
-        return CompletableFuture.completedFuture(movies.toString());
-    }
 }
 

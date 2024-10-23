@@ -18,12 +18,4 @@ public class MovieDatabaseService {
     public void saveMovie(Movie movie) {
         movieRepository.save(movie);
     }
-
-    public List<Movie> findAllMovies() {
-        return movieRepository.findAll();
-    }
-
-    public Movie findMovieById(Long id) {
-        return movieRepository.findById(id).orElse(null);
-    }
 }

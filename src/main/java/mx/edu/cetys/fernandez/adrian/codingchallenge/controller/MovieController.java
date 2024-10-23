@@ -19,9 +19,4 @@ public class MovieController {
     public CompletableFuture<String> processMovie(@PathVariable String title) throws Exception {
         return movieService.processMovie(title);
     }
-
-    @GetMapping
-    public CompletableFuture<String> getAllMovies() {
-        return movieService.getAllMovies();
-    }
 }
